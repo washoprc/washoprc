@@ -1,0 +1,28 @@
+name: Generate gitartwork
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * *' # 毎日自動更新
+
+jobs:
+  generate-gitartwork:
+    name: Create gitartwork SVG
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false # デフォルトの認証情報を無効化
+      - uses: jasineri/gitartwork@v1
+        with:
+          user_name: 'washoprc' # GitHubのユーザー名
+          text: 'WashoPrc'
+          animation: true
+      - name: Push generated files
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add gitartwork.svg
+          git commit -m "[ci skip] Update gitartwork" || echo "No changes to commit"
+          git push https://washoprc:${{ secrets.METRICS_TOKEN }}@github.com/washoprc/washoprc.git
