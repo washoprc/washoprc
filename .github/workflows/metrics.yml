@@ -20,7 +20,7 @@ jobs:
           else
             echo "Token is empty"
           fi
-      - uses: lowlighter/metrics@latest
+      - uses: lowlighter/metrics@v3.34
         with:
           # Your GitHub token
           # The following scopes are required:
